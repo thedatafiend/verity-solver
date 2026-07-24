@@ -241,6 +241,17 @@ button.btn:active { transform: translateY(1px); }
 .success { color: var(--green); font-weight: 700; }
 .subhead { font-size: 13px; text-transform: uppercase; letter-spacing: 1.2px; color: var(--muted); margin: 4px 0 12px; }
 
+/* ---- Tables ---- */
+.tablewrap { overflow-x: auto; margin: 10px 0; border: 1px solid var(--line); border-radius: 10px; }
+table.data { border-collapse: collapse; width: 100%; font-size: 13.5px; min-width: 480px; }
+table.data th, table.data td { text-align: left; padding: 9px 12px; border-bottom: 1px solid var(--line); }
+table.data th {
+  font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--muted);
+  background: #10131b; position: sticky; top: 0;
+}
+table.data tr:last-child td { border-bottom: none; }
+table.data td b { color: var(--gold); }
+
 /* ---- Expandables ---- */
 details.exp { margin: 10px 0; border: 1px solid var(--line); border-radius: 10px; background: var(--panel2); }
 details.exp summary {
