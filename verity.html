@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Verity — Solver &amp; Guide · Salvation's Edge</title>
+<meta name="description" content="Interactive solver and guide for Verity, the fourth encounter of Destiny 2's Salvation's Edge raid." />
+<link rel="stylesheet" href="assets/style.css" />
+</head>
+<body>
+<div class="wrap">
+  <nav class="site">
+    <a href="index.html">Salvation's Edge</a>
+    <a href="substratum.html"><span class="n">1</span>Substratum</a>
+    <a href="herald.html"><span class="n">2</span>Herald</a>
+    <a href="repository.html"><span class="n">3</span>Repository</a>
+    <a href="verity.html" class="cur"><span class="n">4</span>Verity</a>
+    <a href="zenith.html"><span class="n">5</span>Zenith</a>
+  </nav>
+
+  <header class="top">
+    <span class="kicker">Encounter 4</span>
+    <h1>Verity</h1>
+    <p>The shape puzzle. Three trapped, three outside — solve it in seconds below.</p>
+  </header>
+
+  <!-- ============ SOLVER ============ -->
+  <div class="card">
+    <h2><span class="tag">Inside</span> Solo-room shapes</h2>
+    <p class="hint">The 2D shape each trapped player's statue holds (they call it out). Left → Middle → Right.</p>
+    <div class="cols3" id="insideInputs"></div>
+  </div>
+
+  <div class="card">
+    <h2><span class="tag">Outside</span> Statue shapes</h2>
+    <p class="hint">The 3D shape currently displayed on each big statue in the main room.</p>
+    <div class="cols3" id="outsideInputs"></div>
+  </div>
+
+  <div class="actions">
+    <button class="btn primary" id="solveBtn">Solve</button>
+    <button class="btn ghost" id="resetBtn">Reset</button>
+    <button class="btn ghost" id="exampleBtn">Load example</button>
+  </div>
+
+  <div id="result">
+    <div id="warnBox"></div>
+
+    <div class="card">
+      <h2><span class="tag">Inside</span> Build these shapes</h2>
+      <p class="hint">Each solo player leaves with the 3D shape made from the <em>other two</em> players' shapes. Everyone sends their own shape to both other players.</p>
+      <div id="insideSolution"></div>
+    </div>
+
+    <div class="card">
+      <h2><span class="tag">Outside</span> Dissect &amp; dunk order</h2>
+      <div class="subhead" id="outsideGoalHead">Target statues</div>
+      <div id="outsideTargets"></div>
+      <div class="subhead" style="margin-top:18px;">Steps <span id="stepCount" class="name3d"></span></div>
+      <ol class="steps" id="outsideSteps"></ol>
+    </div>
+  </div>
+
+  <!-- ============ GUIDE ============ -->
+  <div id="guide"></div>
+
+  <div class="pagenav">
+    <a href="repository.html">← 3 · Repository</a>
+    <a href="zenith.html">5 · Zenith →</a>
+  </div>
+
+  <footer class="foot">Runs entirely in your browser. Nothing is sent anywhere. Not affiliated with Bungie.</footer>
+</div>
+
+<script src="assets/solver.js"></script>
+</body>
+</html>
