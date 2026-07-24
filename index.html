@@ -1,498 +1,154 @@
+<!doctype html>
+<html lang="en">
+<head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<title>Verity Solver — Destiny 2 Salvation's Edge</title>
-<meta name="description" content="A fast, user-friendly solver for the Verity encounter in Destiny 2's Salvation's Edge raid. Enter the inside shapes and outside statues; get inside + outside callouts." />
-<style>
-  :root {
-    --bg: #0b0d12;
-    --bg2: #12151d;
-    --panel: #171b25;
-    --panel2: #1e2331;
-    --line: #2a3040;
-    --text: #e7eaf0;
-    --muted: #9aa3b5;
-    --gold: #d9b45a;
-    --gold-dim: #8a7434;
-    --accent: #b79bff;
-    --green: #6fe3a0;
-    --red: #ff7a7a;
-    --shadow: 0 10px 30px rgba(0,0,0,.45);
-    --radius: 14px;
-  }
-  * { box-sizing: border-box; }
-  html, body { margin: 0; padding: 0; }
-  body {
-    background:
-      radial-gradient(1200px 600px at 50% -10%, #1b2030 0%, rgba(27,32,48,0) 60%),
-      linear-gradient(180deg, var(--bg) 0%, #090a0e 100%);
-    color: var(--text);
-    font: 15px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    min-height: 100vh;
-    -webkit-text-size-adjust: 100%;
-    padding: max(16px, env(safe-area-inset-top)) 16px calc(48px + env(safe-area-inset-bottom));
-  }
-  .wrap { max-width: 920px; margin: 0 auto; }
-
-  header.top { text-align: center; margin: 8px 0 22px; }
-  header.top h1 {
-    font-size: clamp(24px, 5.4vw, 38px);
-    margin: 0 0 4px;
-    letter-spacing: .5px;
-    background: linear-gradient(180deg, #fff 0%, var(--gold) 130%);
-    -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
-    font-weight: 800;
-  }
-  header.top p { color: var(--muted); margin: 0; font-size: 14px; }
-
-  .card {
-    background: linear-gradient(180deg, var(--panel) 0%, var(--bg2) 100%);
-    border: 1px solid var(--line);
-    border-radius: var(--radius);
-    padding: 18px;
-    margin: 0 0 18px;
-    box-shadow: var(--shadow);
-  }
-  .card h2 {
-    margin: 0 0 4px; font-size: 16px; letter-spacing: .4px;
-    display: flex; align-items: center; gap: 8px;
-  }
-  .card h2 .tag {
-    font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;
-    color: var(--bg); background: var(--gold); padding: 2px 8px; border-radius: 999px;
-  }
-  .card .hint { color: var(--muted); font-size: 13px; margin: 0 0 14px; }
-
-  .cols3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
-  @media (max-width: 620px) { .cols3 { grid-template-columns: 1fr; } }
-
-  .slot { background: var(--panel2); border: 1px solid var(--line); border-radius: 12px; padding: 12px; }
-  .slot .pos {
-    font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.2px;
-    color: var(--accent); margin-bottom: 10px; text-align: center;
-  }
-
-  .opts { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; }
-  .opt {
-    appearance: none; cursor: pointer; background: #0f1218; color: var(--muted);
-    border: 1.5px solid var(--line); border-radius: 10px; padding: 8px; flex: 1 1 0;
-    min-width: 0; display: flex; flex-direction: column; align-items: center; gap: 6px;
-    transition: border-color .12s, background .12s, color .12s, transform .05s;
-  }
-  .opt:hover { border-color: #3a445c; }
-  .opt:active { transform: translateY(1px); }
-  .opt .lbl { font-size: 11px; font-weight: 600; }
-  .opt svg { width: 30px; height: 30px; display: block; }
-  .opt.sel { border-color: var(--gold); background: #221d10; color: var(--text); box-shadow: 0 0 0 1px var(--gold-dim) inset; }
-
-  .opts.six .opt { flex: 1 1 30%; }
-
-  .shape-stroke { stroke: currentColor; stroke-width: 5; fill: none; }
-  .shape-fill { fill: currentColor; }
-
-  .actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 4px; }
-  button.btn {
-    cursor: pointer; border-radius: 10px; border: 1px solid var(--line);
-    padding: 11px 16px; font-weight: 700; font-size: 14px; letter-spacing: .3px;
-    background: var(--panel2); color: var(--text);
-  }
-  button.btn.primary { background: linear-gradient(180deg, var(--gold) 0%, #b8923f 100%); color: #17130a; border-color: var(--gold-dim); }
-  button.btn.ghost { background: transparent; color: var(--muted); }
-  button.btn:active { transform: translateY(1px); }
-
-  /* Results */
-  #result { display: none; }
-  #result.show { display: block; }
-
-  .warn {
-    border: 1px solid #6a2a2a; background: #241416; color: #ffd0d0;
-    border-radius: 12px; padding: 12px 14px; margin: 0 0 16px; font-size: 14px;
-  }
-  .warn b { color: var(--red); }
-
-  .solverow { display: flex; align-items: center; gap: 12px; padding: 12px; border: 1px solid var(--line);
-    background: var(--panel2); border-radius: 12px; margin-bottom: 10px; }
-  .solverow .pill {
-    font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px;
-    padding: 3px 9px; border-radius: 999px; background: #0f1218; border: 1px solid var(--line); color: var(--accent);
-    white-space: nowrap;
-  }
-  .solverow .body { flex: 1; min-width: 0; }
-  .solverow .body .big { font-size: 15px; font-weight: 700; }
-  .solverow .body .sub { color: var(--muted); font-size: 13px; }
-
-  .shape-mini { display: inline-flex; align-items: center; gap: 5px; vertical-align: middle; }
-  .shape-mini svg { width: 18px; height: 18px; color: var(--gold); }
-  .name3d { color: var(--gold); font-weight: 800; }
-
-  .steps { counter-reset: step; margin: 0; padding: 0; list-style: none; }
-  .step {
-    position: relative; padding: 14px 14px 14px 52px; border: 1px solid var(--line);
-    background: var(--panel2); border-radius: 12px; margin-bottom: 10px;
-  }
-  .step::before {
-    counter-increment: step; content: counter(step);
-    position: absolute; left: 12px; top: 50%; transform: translateY(-50%);
-    width: 28px; height: 28px; border-radius: 50%;
-    background: linear-gradient(180deg, var(--gold), #a9832f); color: #16120a;
-    font-weight: 800; display: flex; align-items: center; justify-content: center; font-size: 14px;
-  }
-  .step .act { display: block; }
-  .step .act + .act { margin-top: 6px; }
-  .step .arrow { color: var(--muted); }
-  .step .res { margin-top: 8px; font-size: 13px; color: var(--muted); border-top: 1px dashed var(--line); padding-top: 8px; }
-
-  .success { color: var(--green); font-weight: 700; }
-  .subhead { font-size: 13px; text-transform: uppercase; letter-spacing: 1.2px; color: var(--muted); margin: 4px 0 12px; }
-
-  details.rules { margin-top: 6px; }
-  details.rules summary { cursor: pointer; color: var(--accent); font-weight: 600; font-size: 14px; }
-  details.rules ul { color: var(--muted); font-size: 13.5px; }
-  details.rules code { background: #0f1218; padding: 1px 6px; border-radius: 6px; color: var(--gold); }
-
-  footer.foot { text-align: center; color: var(--muted); font-size: 12px; margin-top: 10px; }
-  footer.foot a { color: var(--accent); }
-</style>
-
+<title>Salvation's Edge — Raid Guide &amp; Verity Solver</title>
+<meta name="description" content="A complete, mobile-friendly guide to Destiny 2's Salvation's Edge raid — every encounter explained with original maps, plus an interactive Verity solver." />
+<link rel="stylesheet" href="assets/style.css" />
+</head>
+<body>
 <div class="wrap">
+  <nav class="site">
+    <a href="index.html" class="cur">Salvation's Edge</a>
+    <a href="substratum.html"><span class="n">1</span>Substratum</a>
+    <a href="herald.html"><span class="n">2</span>Herald</a>
+    <a href="repository.html"><span class="n">3</span>Repository</a>
+    <a href="verity.html"><span class="n">4</span>Verity</a>
+    <a href="zenith.html"><span class="n">5</span>Zenith</a>
+  </nav>
+
   <header class="top">
-    <h1>Verity Solver</h1>
-    <p>Destiny&nbsp;2 &middot; Salvation's Edge &middot; 3rd encounter</p>
+    <span class="kicker">Destiny 2 · The Final Shape</span>
+    <h1>Salvation's Edge</h1>
+    <p>A field guide to every encounter — cheat sheets first, detail when you need it, original maps throughout. Includes the interactive <a href="verity.html" style="color:var(--gold);font-weight:700;">Verity solver</a>.</p>
   </header>
 
-  <div class="card">
-    <h2><span class="tag">Inside</span> Solo-room shapes</h2>
-    <p class="hint">The 2D shape each trapped player's statue holds (they call it out). Left → Middle → Right.</p>
-    <div class="cols3" id="insideInputs"></div>
+  <div class="enc-grid">
+    <a class="enc-card" href="substratum.html">
+      <span class="num">1</span>
+      <div>
+        <h3>Substratum</h3>
+        <p class="sub">The opening circuit puzzle — basement teams, conductors, and a rotating buff you cannot let expire.</p>
+        <p class="meta">Puzzle · Add-clear heavy</p>
+      </div>
+    </a>
+    <a class="enc-card" href="herald.html">
+      <span class="num">2</span>
+      <div>
+        <h3>Herald of Finality</h3>
+        <p class="sub">First boss. Feed the conductors, break the tether, and burn the Herald before the wave rolls over you.</p>
+        <p class="meta">Boss · DPS check</p>
+      </div>
+    </a>
+    <a class="enc-card" href="repository.html">
+      <span class="num">3</span>
+      <div>
+        <h3>Repository</h3>
+        <p class="sub">A running battle through three rooms of statues, resonance, and Subjugators.</p>
+        <p class="meta">Puzzle · Movement</p>
+      </div>
+    </a>
+    <a class="enc-card" href="verity.html">
+      <span class="num">4</span>
+      <div>
+        <h3>Verity</h3>
+        <p class="sub">The infamous shape puzzle. Includes our interactive solver — enter what you see, read out the answer.</p>
+        <p class="meta">Puzzle · Interactive solver ✦</p>
+      </div>
+    </a>
+    <a class="enc-card" href="zenith.html">
+      <span class="num">5</span>
+      <div>
+        <h3>Zenith — The Witness</h3>
+        <p class="sub">The finale. Pass the tests, cleave the hands, and put the Witness down.</p>
+        <p class="meta">Final boss · Coordination</p>
+      </div>
+    </a>
   </div>
 
   <div class="card">
-    <h2><span class="tag">Outside</span> Statue shapes</h2>
-    <p class="hint">The 3D shape currently displayed on each big statue in the main room.</p>
-    <div class="cols3" id="outsideInputs"></div>
+    <h2><span class="tag">Raid</span> The basics</h2>
+    <ul>
+      <li><b>Where:</b> The Pale Heart of the Traveler — climbing the Witness's monolith. Released June 7, 2024 with <i>The Final Shape</i> (ownership required).</li>
+      <li><b>Fireteam:</b> 6 players. Every encounter builds on the central <span class="term">Resonance</span> mechanic and its three shapes — triangle, square, circle.</li>
+      <li><b>Time budget:</b> experienced teams clear in roughly 2–4 hours; learning teams should plan 6–12 hours, often split across sessions. This is widely considered the most mechanically demanding raid in the game — communication is the real power level.</li>
+      <li><b>Power:</b> the power system was reworked in 2025; be at or near the current seasonal caps and check in-game recommendations.</li>
+    </ul>
   </div>
 
-  <div class="actions">
-    <button class="btn primary" id="solveBtn">Solve</button>
-    <button class="btn ghost" id="resetBtn">Reset</button>
-    <button class="btn ghost" id="exampleBtn">Load example</button>
-  </div>
-
-  <div id="result">
-    <div id="warnBox"></div>
-
-    <div class="card">
-      <h2><span class="tag">Inside</span> Build these shapes</h2>
-      <p class="hint">Each solo player leaves with the 3D shape made from the <em>other two</em> players' shapes. Everyone sends their own shape to both other players.</p>
-      <div id="insideSolution"></div>
+  <div class="card">
+    <h2><span class="tag">Loot</span> What drops where</h2>
+    <p class="hint">All six legendary weapons are craftable via red-border (Deepsight) patterns.</p>
+    <div class="tablewrap">
+      <table class="data">
+        <tr><th>Weapon</th><th>Type</th><th>Drops from</th></tr>
+        <tr><td><b>Euphony</b> (Exotic)</td><td>Strand Linear Fusion</td><td>Zenith (Witness) only — ~5% base, improved by raid triumphs + bad-luck protection</td></tr>
+        <tr><td>Imminence</td><td>Strand SMG</td><td>Substratum · Dissipation · Verity</td></tr>
+        <tr><td>Non-Denouement</td><td>Arc Bow</td><td>Substratum · Dissipation · Verity</td></tr>
+        <tr><td>Nullify</td><td>Solar Pulse</td><td>Substratum · Repository</td></tr>
+        <tr><td>Forthcoming Deviance</td><td>Void Glaive</td><td>Dissipation · Repository</td></tr>
+        <tr><td>Summum Bonum</td><td>Arc Sword</td><td>Dissipation · Verity · Zenith</td></tr>
+        <tr><td>Critical Anomaly</td><td>Stasis Sniper</td><td>Repository · Zenith</td></tr>
+      </table>
     </div>
-
-    <div class="card">
-      <h2><span class="tag">Outside</span> Dissect &amp; dunk order</h2>
-      <div class="subhead" id="outsideGoalHead">Target statues</div>
-      <div id="outsideTargets"></div>
-      <div class="subhead" style="margin-top:18px;">Steps <span id="stepCount" class="name3d"></span></div>
-      <ol class="steps" id="outsideSteps"></ol>
-    </div>
+    <ul>
+      <li><b>Armor:</b> Promised Reign (Hunter), Promised Reunion (Titan), Promised Victory (Warlock) class sets, split across encounters.</li>
+      <li><b>Spoils kiosk:</b> after the Witness dies, the final room's monument sells red-border weapons and armor for 20 Spoils of Conquest each.</li>
+      <li><b>Secret chests</b> drop 5 Spoils plus a previously-acquired raid item.</li>
+    </ul>
   </div>
 
   <div class="card">
-    <details class="rules">
-      <summary>How it works &amp; the rules</summary>
-      <ul>
-        <li><b>2D shapes:</b> Circle, Square, Triangle.</li>
-        <li><b>3D shapes</b> (a pair of 2D shapes): <code>Sphere</code> = Circle+Circle, <code>Cube</code> = Square+Square, <code>Pyramid</code> = Triangle+Triangle, <code>Cone</code> = Circle+Triangle, <code>Cylinder</code> = Circle+Square, <code>Prism</code> = Square+Triangle.</li>
-        <li><b>Inside rule:</b> each solo player must build the 3D shape made of the two shapes that are <em>not</em> their own. Practically: everyone sends their own shape to the other two players, so each ends holding the other two players' shapes.</li>
-        <li><b>Outside rule:</b> each statue must end holding a 3D shape that does <em>not</em> contain its own inside shape (= the two other players' shapes). You change a statue by dissecting one 2D component off it and dunking it on another statue; two dissections at once = a component swap.</li>
-        <li><b>The solver</b> searches for the fewest swaps (each swap = 2 dunks) and handles the 3-swap "rotation" case automatically.</li>
-      </ul>
-    </details>
+    <h2><span class="tag">Extras</span> Secret chests &amp; the red-border puzzle</h2>
+    <ul>
+      <li><b>Chest 1</b> — near the end of the Monolith jumping puzzle (between Dissipation and Repository): at the amber-slab wall guarded by Dread, go right to the right-most amber cluster and <b>slide under the gap in the wall</b>; the chest is across that room.</li>
+      <li><b>Chest 2</b> — in the final climb before the Witness, in the area circling the <b>giant spiraling root</b> just before the boss arena.</li>
+      <li><b>Bonus red-border chest:</b> a raid-long conductor puzzle keyed to the Resonance shapes shown in the raid's first room. Three hidden conductor rooms are active per run — charge each active conductor with its matching Resonance and a chest with a <b>guaranteed Deepsight raid weapon</b> appears after the Witness dies.</li>
+    </ul>
   </div>
 
-  <footer class="foot">Runs entirely in your browser. Nothing is sent anywhere. Not affiliated with Bungie.</footer>
+  <div class="card">
+    <h2><span class="tag">Weekly</span> Encounter challenges</h2>
+    <div class="tablewrap">
+      <table class="data">
+        <tr><th>Encounter</th><th>Challenge</th><th>Rule</th></tr>
+        <tr><td>Substratum</td><td><b>Scenic Route</b></td><td>Kill only the Overload Minotaur on the longer alternate path — first team leaves theirs alive until the second team's is handled</td></tr>
+        <tr><td>Dissipation</td><td><b>At Capacity</b></td><td>Charge conductors only with Resonance taken from the side wings</td></tr>
+        <tr><td>Repository</td><td><b>Balanced Diet</b></td><td>Never pick up the same Resonance shape twice in a row</td></tr>
+        <tr><td>Verity</td><td><b>Varied Geometry</b></td><td>Never deposit on the same statue twice in a row</td></tr>
+        <tr><td>Zenith</td><td><b>Coordinated Efforts</b></td><td>All six players earn Glyphbreaker and break the Witness's chest glyphs near-simultaneously</td></tr>
+      </table>
+    </div>
+    <p class="hint" style="margin-top:8px;">Challenges rotate weekly; Master versions award Adept weapons.</p>
+  </div>
+
+  <div class="card">
+    <h2><span class="tag">Prep</span> Loadout notes</h2>
+    <ul>
+      <li><b>Composition:</b> one healing/support super (Well of Radiance still earns its slot), one debuff (Divinity or Tractor Cannon), everyone else on burst DPS.</li>
+      <li><b>Weapons:</b> strong add-clear everywhere — the whole raid throws Dread at you while you solve puzzles. Bring a long-range precision option (Substratum and Zenith mechanics) and swap-style rockets, heavy burst, or swords for boss phases. The Witness allows close-range play, so sword strategies are viable; Euphony itself is strong there once you have it.</li>
+      <li><b>Champions</b> appear on Master — bring stuns to match the active mods.</li>
+      <li>Specific god rolls shift with the sandbox — treat this as archetype advice and check current community resources before a serious attempt.</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h2><span class="tag alt">Credits</span> Sources &amp; further reading</h2>
+    <p class="hint">All maps and diagrams on this site are original artwork. Written guidance was researched and written in our own words from the community resources below — go read them, they're excellent.</p>
+    <ul class="srcs">
+      <li><a href="https://grindout.com/destiny-2/guides/salvations-edge" rel="noopener">Grindout — Salvation's Edge Guide</a></li>
+      <li><a href="https://www.destinypedia.com/Salvation%27s_Edge" rel="noopener">Destinypedia — Salvation's Edge</a></li>
+      <li><a href="https://www.shacknews.com/article/140025/salvations-edge-raid-guide-destiny-2" rel="noopener">Shacknews — Salvation's Edge raid guide</a></li>
+      <li><a href="https://www.blueberries.gg/weapons/salvations-edge-loot-table/" rel="noopener">Blueberries.gg — loot table</a> · <a href="https://www.blueberries.gg/leveling/salvations-edge-challenges/" rel="noopener">challenges</a> · <a href="https://www.blueberries.gg/leveling/salvations-edge-red-border-chest/" rel="noopener">red-border chest</a></li>
+      <li><a href="https://www.thegamer.com/destiny-2-final-shape-salvations-edge-raid-encounters-hidden-chests/" rel="noopener">TheGamer — encounters &amp; hidden chests</a></li>
+      <li><a href="https://gamerant.com/destiny-2-salvations-edge-all-secret-chest-locations-red-border-chest/" rel="noopener">GameRant — secret chest locations</a></li>
+    </ul>
+  </div>
+
+  <footer class="foot">
+    Community fan guide. Not affiliated with Bungie. Destiny 2 and Salvation's Edge are trademarks of Bungie, Inc.
+  </footer>
 </div>
-
-<script>
-(function () {
-  "use strict";
-
-  // ---- Shape model -------------------------------------------------------
-  var TWO_D = ["circle", "square", "triangle"];
-  var TWO_D_LABEL = { circle: "Circle", square: "Square", triangle: "Triangle" };
-
-  // 3D name <-> sorted pair of 2D components
-  var THREE_D = {
-    Sphere:   ["circle", "circle"],
-    Cube:     ["square", "square"],
-    Pyramid:  ["triangle", "triangle"],
-    Cone:     ["circle", "triangle"],
-    Cylinder: ["circle", "square"],
-    Prism:    ["square", "triangle"]
-  };
-  var THREE_D_ORDER = ["Sphere", "Cube", "Pyramid", "Cone", "Cylinder", "Prism"];
-
-  function sortPair(a, b) { return [a, b].sort(); }
-  function pairKey(pair) { return pair.slice().sort().join(","); }
-
-  var NAME_BY_KEY = {};
-  Object.keys(THREE_D).forEach(function (name) {
-    NAME_BY_KEY[pairKey(THREE_D[name])] = name;
-  });
-  function nameOfPair(pair) { return NAME_BY_KEY[pairKey(pair)]; }
-
-  // ---- SVG icons ---------------------------------------------------------
-  function icon2d(shape) {
-    if (shape === "circle") return '<svg viewBox="0 0 40 40"><circle class="shape-stroke" cx="20" cy="20" r="14"/></svg>';
-    if (shape === "square") return '<svg viewBox="0 0 40 40"><rect class="shape-stroke" x="7" y="7" width="26" height="26" rx="2"/></svg>';
-    return '<svg viewBox="0 0 40 40"><path class="shape-stroke" stroke-linejoin="round" d="M20 6 L34 32 L6 32 Z"/></svg>';
-  }
-  function miniPair(pair) {
-    return '<span class="shape-mini">' + icon2d(pair[0]) + icon2d(pair[1]) + '</span>';
-  }
-
-  // ---- Build inputs ------------------------------------------------------
-  var POSITIONS = ["Left", "Middle", "Right"];
-  var inside = [null, null, null];   // 2D shapes
-  var outside = [null, null, null];  // 3D names
-
-  function buildInsideInputs() {
-    var root = document.getElementById("insideInputs");
-    root.innerHTML = "";
-    POSITIONS.forEach(function (pos, i) {
-      var slot = document.createElement("div");
-      slot.className = "slot";
-      var html = '<div class="pos">' + pos + '</div><div class="opts">';
-      TWO_D.forEach(function (sh) {
-        html += '<button class="opt" data-kind="inside" data-idx="' + i + '" data-val="' + sh + '">' +
-          icon2d(sh) + '<span class="lbl">' + TWO_D_LABEL[sh] + '</span></button>';
-      });
-      html += '</div>';
-      slot.innerHTML = html;
-      root.appendChild(slot);
-    });
-  }
-
-  function buildOutsideInputs() {
-    var root = document.getElementById("outsideInputs");
-    root.innerHTML = "";
-    POSITIONS.forEach(function (pos, i) {
-      var slot = document.createElement("div");
-      slot.className = "slot";
-      var html = '<div class="pos">' + pos + '</div><div class="opts six">';
-      THREE_D_ORDER.forEach(function (name) {
-        html += '<button class="opt" data-kind="outside" data-idx="' + i + '" data-val="' + name + '">' +
-          miniPair(THREE_D[name]) + '<span class="lbl">' + name + '</span></button>';
-      });
-      html += '</div>';
-      slot.innerHTML = html;
-      root.appendChild(slot);
-    });
-  }
-
-  function onOptClick(e) {
-    var btn = e.target.closest(".opt");
-    if (!btn) return;
-    var kind = btn.getAttribute("data-kind");
-    var idx = parseInt(btn.getAttribute("data-idx"), 10);
-    var val = btn.getAttribute("data-val");
-    if (kind === "inside") inside[idx] = val; else outside[idx] = val;
-    // update selected styling within this slot
-    var slot = btn.closest(".slot");
-    slot.querySelectorAll(".opt").forEach(function (o) { o.classList.remove("sel"); });
-    btn.classList.add("sel");
-  }
-
-  // ---- Outside solver: BFS over component swaps --------------------------
-  // state: array of 3 sorted pairs. move: swap one component between two statues.
-  function stateKey(state) {
-    return state.map(function (p) { return p.join(""); }).join("|");
-  }
-  function multisetKey(state) {
-    var all = [];
-    state.forEach(function (p) { all.push(p[0], p[1]); });
-    return all.sort().join(",");
-  }
-
-  function solveOutside(startPairs, goalPairs) {
-    var goalKey = stateKey(goalPairs.map(function (p) { return p.slice().sort(); }));
-    var start = startPairs.map(function (p) { return p.slice().sort(); });
-
-    if (stateKey(start) === goalKey) return { steps: [], solved: true };
-
-    // reachability guard: swaps conserve the total 2D multiset
-    if (multisetKey(start) !== multisetKey(goalPairs)) {
-      return { steps: null, solved: false, unreachable: true };
-    }
-
-    var visited = {};
-    visited[stateKey(start)] = true;
-    var queue = [{ state: start, path: [] }];
-
-    while (queue.length) {
-      var cur = queue.shift();
-      var s = cur.state;
-      // generate moves: pick 2 statues i<j, pick a component from each, swap
-      for (var i = 0; i < 3; i++) {
-        for (var j = i + 1; j < 3; j++) {
-          for (var ci = 0; ci < 2; ci++) {
-            for (var cj = 0; cj < 2; cj++) {
-              var ti = s[i][ci], tj = s[j][cj];
-              if (ti === tj) continue; // no-op swap
-              var ns = [s[0].slice(), s[1].slice(), s[2].slice()];
-              ns[i][ci] = tj; ns[j][cj] = ti;
-              ns[i] = ns[i].sort(); ns[j] = ns[j].sort();
-              var k = stateKey(ns);
-              if (visited[k]) continue;
-              var move = { i: i, j: j, giveI: ti, giveJ: tj, after: [ns[0].slice(), ns[1].slice(), ns[2].slice()] };
-              var np = cur.path.concat([move]);
-              if (k === goalKey) return { steps: np, solved: true };
-              visited[k] = true;
-              queue.push({ state: ns, path: np });
-            }
-          }
-        }
-      }
-    }
-    return { steps: null, solved: false, unreachable: true };
-  }
-
-  // ---- Render solution ---------------------------------------------------
-  function shapeInline2d(sh) { return '<span class="shape-mini">' + icon2d(sh) + '</span> ' + TWO_D_LABEL[sh]; }
-
-  function otherTwo(i) {
-    var out = [];
-    for (var k = 0; k < 3; k++) if (k !== i) out.push(inside[k]);
-    return out;
-  }
-
-  function render() {
-    // validate inputs
-    for (var i = 0; i < 3; i++) {
-      if (!inside[i]) { alert("Pick the inside shape for " + POSITIONS[i] + "."); return; }
-      if (!outside[i]) { alert("Pick the outside statue shape for " + POSITIONS[i] + "."); return; }
-    }
-
-    var warn = document.getElementById("warnBox");
-    warn.innerHTML = "";
-
-    // ---- Inside solution
-    var insEl = document.getElementById("insideSolution");
-    insEl.innerHTML = "";
-    for (var p = 0; p < 3; p++) {
-      var others = otherTwo(p);
-      var targetPair = sortPair(others[0], others[1]);
-      var targetName = nameOfPair(targetPair);
-      var receivers = POSITIONS.filter(function (_, k) { return k !== p; }).join(" & ");
-      var row = document.createElement("div");
-      row.className = "solverow";
-      row.innerHTML =
-        '<span class="pill">' + POSITIONS[p] + '</span>' +
-        '<div class="body">' +
-          '<div class="big">Build <span class="name3d">' + targetName + '</span> ' + miniPair(targetPair) + '</div>' +
-          '<div class="sub">You are ' + shapeInline2d(inside[p]) + '. Send your ' + TWO_D_LABEL[inside[p]] +
-            ' to <b>' + receivers + '</b>. You keep the ' + TWO_D_LABEL[others[0]] + ' + ' + TWO_D_LABEL[others[1]] + '.</div>' +
-        '</div>';
-      insEl.appendChild(row);
-    }
-
-    // ---- Outside targets
-    var goalPairs = [];
-    for (var q = 0; q < 3; q++) {
-      var oth = otherTwo(q);
-      goalPairs.push(sortPair(oth[0], oth[1]));
-    }
-    var tgEl = document.getElementById("outsideTargets");
-    tgEl.innerHTML = "";
-    for (var t = 0; t < 3; t++) {
-      var gName = nameOfPair(goalPairs[t]);
-      var curName = outside[t];
-      var same = (curName === gName);
-      var row2 = document.createElement("div");
-      row2.className = "solverow";
-      row2.innerHTML =
-        '<span class="pill">' + POSITIONS[t] + '</span>' +
-        '<div class="body">' +
-          '<div class="big">' + (same ? '<span class="success">✓ already </span>' : 'Make ') +
-            '<span class="name3d">' + gName + '</span> ' + miniPair(goalPairs[t]) + '</div>' +
-          '<div class="sub">' + POSITIONS[t] + ' statue (inside ' + TWO_D_LABEL[inside[t]] +
-            ') &mdash; currently ' + curName + ' ' + miniPair(THREE_D[curName]) + '</div>' +
-        '</div>';
-      tgEl.appendChild(row2);
-    }
-
-    // ---- Outside steps (BFS)
-    var startPairs = outside.map(function (name) { return THREE_D[name].slice(); });
-    var res = solveOutside(startPairs, goalPairs);
-
-    var stepsEl = document.getElementById("outsideSteps");
-    var countEl = document.getElementById("stepCount");
-    stepsEl.innerHTML = "";
-
-    if (res.unreachable) {
-      warn.innerHTML = '<div class="warn"><b>Those shapes can\'t be reached by dissecting.</b> ' +
-        'Dissection swaps never change the total pool of 2D shapes, but your outside statues hold a different ' +
-        'set than the target needs. Double-check the outside statue shapes and the inside call-outs.</div>';
-      countEl.textContent = "";
-      return;
-    }
-
-    if (res.steps.length === 0) {
-      countEl.textContent = "";
-      stepsEl.innerHTML = '<li class="step" style="padding-left:52px;"><span class="success">Statues already match — no dunks needed.</span></li>';
-    } else {
-      countEl.textContent = res.steps.length + (res.steps.length === 1 ? " swap · " : " swaps · ") + (res.steps.length * 2) + " dunks";
-      res.steps.forEach(function (m) {
-        var li = document.createElement("li");
-        li.className = "step";
-        var pi = POSITIONS[m.i], pj = POSITIONS[m.j];
-        var afterI = m.after[m.i], afterJ = m.after[m.j];
-        li.innerHTML =
-          '<span class="act">Dissect ' + shapeInline2d(m.giveI) + ' off <b>' + pi + '</b> ' +
-            '<span class="arrow">→ dunk on</span> <b>' + pj + '</b></span>' +
-          '<span class="act">Dissect ' + shapeInline2d(m.giveJ) + ' off <b>' + pj + '</b> ' +
-            '<span class="arrow">→ dunk on</span> <b>' + pi + '</b></span>' +
-          '<span class="res"><b>' + pi + '</b> → ' + '<span class="name3d">' + nameOfPair(afterI) + '</span> ' + miniPair(afterI) +
-            ' &nbsp;·&nbsp; <b>' + pj + '</b> → ' + '<span class="name3d">' + nameOfPair(afterJ) + '</span> ' + miniPair(afterJ) + '</span>';
-        stepsEl.appendChild(li);
-      });
-    }
-
-    var result = document.getElementById("result");
-    result.classList.add("show");
-    result.scrollIntoView({ behavior: "smooth", block: "start" });
-  }
-
-  // ---- Reset / example ---------------------------------------------------
-  function reset() {
-    inside = [null, null, null];
-    outside = [null, null, null];
-    document.querySelectorAll(".opt.sel").forEach(function (o) { o.classList.remove("sel"); });
-    document.getElementById("result").classList.remove("show");
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  }
-
-  function select(kind, idx, val) {
-    var sel = '.opt[data-kind="' + kind + '"][data-idx="' + idx + '"][data-val="' + val + '"]';
-    var btn = document.querySelector(sel);
-    if (btn) btn.click();
-  }
-  function loadExample() {
-    reset();
-    // Classic "rotation" case: inside all distinct, statues are the three pure doubles.
-    select("inside", 0, "circle");
-    select("inside", 1, "square");
-    select("inside", 2, "triangle");
-    select("outside", 0, "Sphere");
-    select("outside", 1, "Cube");
-    select("outside", 2, "Pyramid");
-  }
-
-  // ---- Wire up -----------------------------------------------------------
-  buildInsideInputs();
-  buildOutsideInputs();
-  document.getElementById("insideInputs").addEventListener("click", onOptClick);
-  document.getElementById("outsideInputs").addEventListener("click", onOptClick);
-  document.getElementById("solveBtn").addEventListener("click", render);
-  document.getElementById("resetBtn").addEventListener("click", reset);
-  document.getElementById("exampleBtn").addEventListener("click", loadExample);
-})();
-</script>
+</body>
+</html>

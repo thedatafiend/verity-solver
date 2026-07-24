@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Herald of Finality (Dissipation) — Guide · Salvation's Edge</title>
+<meta name="description" content="Guide to Dissipation, the Herald of Finality boss fight — second encounter of Destiny 2's Salvation's Edge raid. Mechanics, roles, callouts, and an original map." />
+<link rel="stylesheet" href="assets/style.css" />
+</head>
+<body>
+<div class="wrap">
+  <nav class="site">
+    <a href="index.html">Salvation's Edge</a>
+    <a href="substratum.html"><span class="n">1</span>Substratum</a>
+    <a href="herald.html" class="cur"><span class="n">2</span>Herald</a>
+    <a href="repository.html"><span class="n">3</span>Repository</a>
+    <a href="verity.html"><span class="n">4</span>Verity</a>
+    <a href="zenith.html"><span class="n">5</span>Zenith</a>
+  </nav>
+
+  <header class="top">
+    <span class="kicker">Encounter 2 · Dissipation</span>
+    <h1>Herald of Finality</h1>
+    <p>First boss. Juggle plates, read the conduits, and never let a Knight touch a plate.</p>
+  </header>
+
+  <div class="card cheat">
+    <h2><span class="tag">TL;DR</span> The whole fight in nine lines</h2>
+    <ol>
+      <li>Split into three pairs — <b>Left, Middle, Right</b>. Each pair owns its wing all fight.</li>
+      <li>Clear your wing; kill your <span class="term">Trammel</span> miniboss → one player per side gets <span class="term">Call to Reckoning</span>.</li>
+      <li>Reckoning players drop to the boss pit, crit the Herald's head, break the <b>Blights</b> that spawn, crit again → buff becomes <span class="term">Stolen Favor</span>.</li>
+      <li>Stolen Favor lets you <b>read your side's conduit symbol</b> — call it: <b>triangle</b> or <b>circle</b>.</li>
+      <li>Pairs bounce the signal between their two plates; each catch spawns Resonance. Collect up to <b>x3 — a 4th pickup kills you</b>.</li>
+      <li>Your <b>last pickup sets your whole stack's shape</b> — grab the called shape last.</li>
+      <li>Lock all three conduits with matching Resonance → deposit chest appears center. Deposits extend the wipe timer (<span class="term">The Final Shape Looming</span>, cap ~3:20).</li>
+      <li>Chest expires → shield drops → group up and burn the boss.</li>
+      <li><b>Final stand:</b> ~30 seconds, all minibosses at once, no mechanics — dump everything.</li>
+    </ol>
+  </div>
+
+  <div class="card">
+    <h2><span class="tag alt">Map</span> Arena layout</h2>
+    <figure class="diagram">
+      <div class="frame">
+        <svg viewBox="0 0 860 600" role="img" aria-label="Top-down schematic of the Dissipation arena">
+          <!-- defs -->
+          <defs>
+            <marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M0 0 L10 5 L0 10 z" fill="#9aa3b5"/>
+            </marker>
+          </defs>
+          <!-- Witness hand -->
+          <text x="430" y="18" fill="#ff7a7a" font-size="15" text-anchor="middle" font-weight="700">Witness's hand — AoE circles below</text>
+          <path d="M310 38 q120 -26 240 0" stroke="#6a2a2a" stroke-width="3" fill="none" stroke-dasharray="6 5"/>
+          <!-- Boss field -->
+          <rect x="230" y="60" width="400" height="240" rx="18" fill="#141824" stroke="#2a3040" stroke-width="2"/>
+          <circle cx="330" cy="130" r="22" fill="none" stroke="#8a3a3a" stroke-width="2" stroke-dasharray="4 4"/>
+          <circle cx="540" cy="170" r="18" fill="none" stroke="#8a3a3a" stroke-width="2" stroke-dasharray="4 4"/>
+          <text x="430" y="88" fill="#9aa3b5" font-size="13" text-anchor="middle" letter-spacing="2">BOSS PIT</text>
+          <!-- Herald -->
+          <g transform="translate(430,135)">
+            <path d="M0 -26 L20 8 L0 26 L-20 8 Z" fill="#d9b45a"/>
+            <text x="0" y="52" fill="#d9b45a" font-size="15" font-weight="800" text-anchor="middle">HERALD</text>
+          </g>
+          <!-- Deposit chest -->
+          <rect x="405" y="238" width="50" height="34" rx="6" fill="#221d10" stroke="#d9b45a" stroke-width="2.5"/>
+          <text x="430" y="292" fill="#d9b45a" font-size="13" text-anchor="middle" font-weight="700">deposit chest</text>
+          <text x="430" y="308" fill="#9aa3b5" font-size="11" text-anchor="middle">(appears after 3 locks)</text>
+          <!-- Left wing -->
+          <rect x="20" y="120" width="180" height="260" rx="14" fill="#10131b" stroke="#2a3040" stroke-width="2"/>
+          <text x="110" y="148" fill="#b79bff" font-size="14" text-anchor="middle" font-weight="800" letter-spacing="1">LEFT WING</text>
+          <rect x="88" y="170" width="44" height="76" rx="8" fill="#171b25" stroke="#b79bff" stroke-width="2.5"/>
+          <text x="110" y="264" fill="#b79bff" font-size="12" text-anchor="middle">conduit</text>
+          <rect x="42" y="296" width="34" height="34" rx="5" fill="#171b25" stroke="#6fe3a0" stroke-width="2"/>
+          <rect x="144" y="296" width="34" height="34" rx="5" fill="#171b25" stroke="#6fe3a0" stroke-width="2"/>
+          <path d="M84 313 H136" stroke="#9aa3b5" stroke-width="2" marker-end="url(#arr)" stroke-dasharray="4 4"/>
+          <text x="110" y="352" fill="#6fe3a0" font-size="11" text-anchor="middle">paired plates — send / catch</text>
+          <!-- Right wing -->
+          <rect x="660" y="120" width="180" height="260" rx="14" fill="#10131b" stroke="#2a3040" stroke-width="2"/>
+          <text x="750" y="148" fill="#b79bff" font-size="14" text-anchor="middle" font-weight="800" letter-spacing="1">RIGHT WING</text>
+          <rect x="728" y="170" width="44" height="76" rx="8" fill="#171b25" stroke="#b79bff" stroke-width="2.5"/>
+          <text x="750" y="264" fill="#b79bff" font-size="12" text-anchor="middle">conduit</text>
+          <rect x="682" y="296" width="34" height="34" rx="5" fill="#171b25" stroke="#6fe3a0" stroke-width="2"/>
+          <rect x="784" y="296" width="34" height="34" rx="5" fill="#171b25" stroke="#6fe3a0" stroke-width="2"/>
+          <path d="M724 313 H776" stroke="#9aa3b5" stroke-width="2" marker-end="url(#arr)" stroke-dasharray="4 4"/>
+          <text x="750" y="352" fill="#6fe3a0" font-size="11" text-anchor="middle">paired plates — send / catch</text>
+          <!-- Middle wing -->
+          <rect x="330" y="340" width="200" height="170" rx="14" fill="#10131b" stroke="#2a3040" stroke-width="2"/>
+          <text x="430" y="368" fill="#b79bff" font-size="14" text-anchor="middle" font-weight="800" letter-spacing="1">MIDDLE WING</text>
+          <rect x="408" y="384" width="44" height="64" rx="8" fill="#171b25" stroke="#b79bff" stroke-width="2.5"/>
+          <text x="430" y="464" fill="#b79bff" font-size="12" text-anchor="middle">conduit</text>
+          <rect x="352" y="470" width="30" height="30" rx="5" fill="#171b25" stroke="#6fe3a0" stroke-width="2"/>
+          <rect x="478" y="470" width="30" height="30" rx="5" fill="#171b25" stroke="#6fe3a0" stroke-width="2"/>
+          <path d="M388 485 H472" stroke="#9aa3b5" stroke-width="2" marker-end="url(#arr)" stroke-dasharray="4 4"/>
+          <!-- Knight lanes -->
+          <path d="M240 330 q-60 20 -105 -10" stroke="#ff7a7a" stroke-width="2" fill="none" marker-end="url(#arr)" stroke-dasharray="3 5"/>
+          <path d="M620 330 q60 20 105 -10" stroke="#ff7a7a" stroke-width="2" fill="none" marker-end="url(#arr)" stroke-dasharray="3 5"/>
+          <text x="430" y="540" fill="#ff7a7a" font-size="12.5" text-anchor="middle">⚠ Ravenous Taken Knights push toward the plates — one touch = wipe</text>
+          <!-- Spawn -->
+          <text x="430" y="580" fill="#9aa3b5" font-size="13" text-anchor="middle" letter-spacing="2">— FIRETEAM SPAWN / REAR RIM —</text>
+        </svg>
+      </div>
+      <div class="legend">
+        <span><i style="background:#d9b45a"></i> boss &amp; deposit</span>
+        <span><i style="background:#b79bff"></i> Resonance conduits</span>
+        <span><i style="background:#6fe3a0"></i> signal plates</span>
+        <span><i style="background:#ff7a7a"></i> hazards</span>
+      </div>
+      <figcaption>Original schematic — orientation is functional, not to scale. Each pair works one wing; everyone meets center to deposit and melt.</figcaption>
+    </figure>
+  </div>
+
+  <div class="card">
+    <h2><span class="tag">Mechanics</span> What everything does</h2>
+    <h3>The wipe timer — "The Final Shape Looming"</h3>
+    <p>Always ticking down; hits zero, you wipe. Every Resonance stack deposited in the central chest <b>adds time</b>, capped around <b>3:20</b>. The whole encounter is a race to keep feeding it.</p>
+    <h3>Trammels &amp; Call to Reckoning</h3>
+    <p>Each wing hosts a <span class="term">Trammel</span>, a big yellow-bar Taken miniboss. Killing it grants one player on that side <span class="term">Call to Reckoning</span> — only Reckoning holders can damage the Herald's head.</p>
+    <h3>Cracking the head → Stolen Favor</h3>
+    <p>Reckoning players crit the head → Taken <b>Blights</b> spawn (one small above the boss, larger ones around the room). Destroy all Blights, crit the head again; enough damage converts the buff to <span class="term">Stolen Favor</span>, which reveals the <b>shape symbol inside your side's conduit</b> — invisible to everyone else. Call it out.</p>
+    <h3>Resonance &amp; plate juggling</h3>
+    <ul>
+      <li>Two shapes appear here: <span class="term">Pyramidal Resonance</span> (triangle) and <span class="term">Spherical Resonance</span> (circle). No squares in this fight.</li>
+      <li>Stand on the lit plate to <b>send</b> the signal to its partner plate; a teammate must be on the receiver to <b>catch</b> it. Every catch spawns Resonance pickups.</li>
+      <li><b>Cap is x3.</b> Picking up a fourth kills you instantly.</li>
+      <li><b>Your last pickup converts your whole stack to that shape</b> — collect the called shape last.</li>
+      <li>A dropped catch punishes the side with a miniboss spawn and sets your conduit progress back — confirm your partner is planted before sending.</li>
+    </ul>
+    <h3>Ravenous Taken Knights</h3>
+    <p>Yellow-bar Knights march at your plates in waves. <b>If any Knight reaches a plate, the whole fireteam wipes.</b> They outrank everything else on your screen.</p>
+    <h3>Locks, deposit, damage</h3>
+    <p>Lock each conduit with Resonance matching its called symbol. Three locks → the chest materializes front-center under the Witness's hand. Deposit stacks to extend the timer; when the chest vanishes the Herald's shield drops and the arena edges glow — <b>damage phase</b>. At low health the Herald enters a <b>final stand</b>: the timer resets to ~30 seconds, every Trammel spawns at once, and it's kill-or-wipe.</p>
+  </div>
+
+  <div class="card">
+    <h2><span class="tag">Roles</span> Three pairs, one job each</h2>
+    <div class="roles">
+      <div class="role">
+        <div class="who">Reckoning player (rotates)</div>
+        <p>Whoever gets <b>Call to Reckoning</b> after the Trammel dies: drop to the pit, crack the head, break Blights, earn Stolen Favor, read and call your conduit's symbol, then get back to help juggle.</p>
+      </div>
+      <div class="role">
+        <div class="who">Plate partner</div>
+        <p>Hold the wing solo meanwhile: <b>Knights first</b>, then Attendants and adds. Be ready on the receiving plate the moment your partner returns.</p>
+      </div>
+      <div class="role">
+        <div class="who">Everyone</div>
+        <p>Collect to x3 with the called shape last, lock or deposit as assigned, group center for DPS, and save supers + heavy for the final stand.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2><span class="tag">Flow</span> One full cycle</h2>
+    <ol class="steps">
+      <li class="step"><span class="act">Encounter opens — adds flood all three wings. Clear your side; prioritize the <b>Ravenous Knights</b>, then kill your <b>Trammel</b>.</span></li>
+      <li class="step"><span class="act">One player per side gains <b>Call to Reckoning</b> and heads to the pit.</span></li>
+      <li class="step"><span class="act">Crit the Herald's head → <b>Blights spawn</b> → team breaks them all → crit again until the buff converts to <b>Stolen Favor</b>.</span><span class="res">Callouts: "blights up" → "blights dead" → "favor!"</span></li>
+      <li class="step"><span class="act">Stolen Favor players read their conduit and call the shape for each side: <i>"Left circle, mid triangle, right circle."</i></span></li>
+      <li class="step"><span class="act">Pairs juggle plates — send, catch, collect. Build to <b>x3</b> with the called shape as your <b>final</b> pickup.</span></li>
+      <li class="step"><span class="act">Lock all three conduits with matching Resonance.</span><span class="res">Callout: "locked" ×3</span></li>
+      <li class="step"><span class="act">Chest appears center — everyone deposits to push the wipe timer toward the ~3:20 cap.</span><span class="res">Running the <b>At Capacity</b> challenge? Deposit only at exactly x3.</span></li>
+      <li class="step"><span class="act">Chest expires → shield drops → group up and <b>burn the Herald</b>. Dodge the Witness-hand ground circles; kill exploding fliers on sight.</span></li>
+      <li class="step"><span class="act">Repeat until final stand: ~30 seconds, all Trammels up, no mechanics — commit everything to the boss.</span></li>
+    </ol>
+  </div>
+
+  <div class="card">
+    <h2><span class="tag">Wipes</span> Why teams die here</h2>
+    <div class="tablewrap">
+      <table class="data">
+        <tr><th>Cause</th><th>Fix</th></tr>
+        <tr><td>Knight touches a plate → instant wipe</td><td>Knights are priority #1 every wave; the plate partner babysits the lanes and calls pushes early</td></tr>
+        <tr><td>Wipe timer expires</td><td>Deposit more stacks each cycle; don't dawdle between head-crack and locks</td></tr>
+        <tr><td>Death by 4th Resonance pickup</td><td>Watch your buff counter; stop walking through spawns at x3</td></tr>
+        <tr><td>Stack converted to the wrong shape</td><td>Last pickup wins — call shapes before collecting, grab your match last</td></tr>
+        <tr><td>Dropped plate catch → punishment miniboss</td><td>Verbally confirm "on plate" before every send; re-read the conduit after any reset</td></tr>
+        <tr><td>Deaths in the pit during the Blight phase</td><td>Don't tunnel the head — clear exploders, keep moving out of marked circles</td></tr>
+        <tr><td>Final stand failure</td><td>Enter the last phase with heavy and supers banked; ignore adds, kill the boss</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2><span class="tag">Loadout</span> What to bring</h2>
+    <ul>
+      <li><b>Classic strat:</b> Well of Radiance anchor + team swords on the boss — the Herald is stationary and reachable. Any high-uptime burst (rockets with reload-swap rolls, heavy linear/sniper burst, Golden Gun) works if your team prefers range.</li>
+      <li><b>Wings are add-hell:</b> bring real waveclear and a survivability build; there is very little cover.</li>
+      <li><b>Save it:</b> the final stand is a 30-second DPS check — bank supers and heavy for it every cycle.</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h2><span class="tag alt">Credits</span> Sources for this page</h2>
+    <ul class="srcs">
+      <li><a href="https://gamerant.com/destiny-2-salvations-edge-dissipation-hearld-of-finality-guide/" rel="noopener">GameRant — Dissipation guide</a></li>
+      <li><a href="https://www.shacknews.com/article/140025/salvations-edge-raid-guide-destiny-2" rel="noopener">Shacknews — Salvation's Edge raid guide</a></li>
+      <li><a href="https://www.destinypedia.com/Herald_of_Finality" rel="noopener">Destinypedia — Herald of Finality</a></li>
+      <li><a href="https://www.sportskeeda.com/mmo/destiny-2-salvation-s-edge-first-boss-encounter-guide-the-herald-finality" rel="noopener">Sportskeeda — Herald of Finality guide</a></li>
+      <li><a href="https://www.charlieintel.com/destiny/destiny-2-salvations-edge-raid-walkthrough-how-to-finish-all-encounters-328473/" rel="noopener">CharlieINTEL — raid walkthrough</a></li>
+      <li><a href="https://mobalytics.gg/blog/destiny-2/salvations-edge-raid-guide/" rel="noopener">Mobalytics — raid guide</a></li>
+      <li><a href="https://grindout.com/destiny-2/guides/salvations-edge" rel="noopener">Grindout — Salvation's Edge guide</a></li>
+    </ul>
+  </div>
+
+  <div class="pagenav">
+    <a href="substratum.html">← 1 · Substratum</a>
+    <a href="repository.html">3 · Repository →</a>
+  </div>
+
+  <footer class="foot">Original maps &amp; text. Not affiliated with Bungie.</footer>
+</div>
+</body>
+</html>
