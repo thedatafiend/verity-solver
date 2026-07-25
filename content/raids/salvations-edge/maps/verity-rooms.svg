@@ -1,0 +1,46 @@
+<svg viewBox="0 0 860 480" role="img" aria-label="Schematic of Verity's outside room and a solo room">
+  <!-- outside room -->
+  <rect x="24" y="24" width="500" height="432" rx="14" fill="#0e0e10" stroke="#2c2c33" stroke-width="2"/>
+  <text x="274" y="52" fill="#ececf0" font-size="14" font-weight="800" text-anchor="middle" letter-spacing="1">OUTSIDE ROOM</text>
+  <!-- 3 big statues -->
+  <g text-anchor="middle">
+    <rect x="84" y="76" width="60" height="84" rx="9" fill="#17171b" stroke="#f2913a" stroke-width="2.5"/>
+    <text x="114" y="122" fill="#f2913a" font-size="12" font-weight="800">L</text>
+    <rect x="244" y="76" width="60" height="84" rx="9" fill="#17171b" stroke="#f2913a" stroke-width="2.5"/>
+    <text x="274" y="122" fill="#f2913a" font-size="12" font-weight="800">M</text>
+    <rect x="404" y="76" width="60" height="84" rx="9" fill="#17171b" stroke="#f2913a" stroke-width="2.5"/>
+    <text x="434" y="122" fill="#f2913a" font-size="12" font-weight="800">R</text>
+  </g>
+  <text x="274" y="186" fill="#f2913a" font-size="11.5" text-anchor="middle" font-weight="700">3 large statues — hold the 3D shapes · "Dissect" here</text>
+  <!-- 6 statues -->
+  <g fill="#17171b" stroke="#b79bff" stroke-width="2">
+    <rect x="64" y="240" width="40" height="56" rx="7"/>
+    <rect x="134" y="240" width="40" height="56" rx="7"/>
+    <rect x="204" y="240" width="40" height="56" rx="7"/>
+    <rect x="274" y="240" width="40" height="56" rx="7"/>
+    <rect x="344" y="240" width="40" height="56" rx="7"/>
+    <rect x="414" y="240" width="40" height="56" rx="7"/>
+  </g>
+  <text x="274" y="322" fill="#b79bff" font-size="11.5" text-anchor="middle" font-weight="700">6 Guardian statues (your armor!) — Ghost pedestals for revives</text>
+  <text x="274" y="368" fill="#ff7a7a" font-size="11.5" text-anchor="middle">⚠ waves incl. 2× Unstoppable Ogres — Knights drop 2D shapes</text>
+  <text x="274" y="432" fill="#9a9aa6" font-size="12" text-anchor="middle" letter-spacing="2">— RALLY / ENTRANCE —</text>
+  <!-- inside room -->
+  <rect x="556" y="24" width="280" height="432" rx="14" fill="#0e0e10" stroke="#2c2c33" stroke-width="2"/>
+  <text x="696" y="52" fill="#ececf0" font-size="14" font-weight="800" text-anchor="middle" letter-spacing="1">SOLO ROOM ×3</text>
+  <!-- glass wall -->
+  <rect x="580" y="70" width="232" height="16" rx="6" fill="#211a26" stroke="#6fe3a0" stroke-width="2"/>
+  <text x="696" y="112" fill="#6fe3a0" font-size="11.5" text-anchor="middle" font-weight="700">glass wall — shows your 2 shapes · exit with 3D aura</text>
+  <!-- 3 statues -->
+  <g fill="#17171b" stroke="#f2913a" stroke-width="2.5">
+    <rect x="596" y="150" width="48" height="66" rx="8"/>
+    <rect x="672" y="150" width="48" height="66" rx="8"/>
+    <rect x="748" y="150" width="48" height="66" rx="8"/>
+  </g>
+  <text x="620" y="188" fill="#f2913a" font-size="11" text-anchor="middle" font-weight="800">L</text>
+  <text x="696" y="188" fill="#f2913a" font-size="11" text-anchor="middle" font-weight="800">M</text>
+  <text x="772" y="188" fill="#f2913a" font-size="11" text-anchor="middle" font-weight="800">R</text>
+  <text x="696" y="240" fill="#f2913a" font-size="11.5" text-anchor="middle" font-weight="700">3 statues hold the 2D shapes — dunk pickups here</text>
+  <text x="696" y="300" fill="#ff7a7a" font-size="11.5" text-anchor="middle">Knights ×2 drop shapes ·</text>
+  <text x="696" y="316" fill="#ff7a7a" font-size="11.5" text-anchor="middle">kill the Ogre to respawn them</text>
+  <text x="696" y="380" fill="#9a9aa6" font-size="11.5" text-anchor="middle">only the back half is accessible</text>
+</svg>

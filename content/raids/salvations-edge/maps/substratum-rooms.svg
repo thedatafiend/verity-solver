@@ -1,0 +1,54 @@
+<svg viewBox="0 0 860 620" role="img" aria-label="Top-down schematic of the Substratum room grid">
+  <defs>
+    <marker id="arr1" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#9a9aa6"/>
+    </marker>
+    <g id="roomkit">
+      <rect x="0" y="0" width="22" height="22" rx="4" fill="#17171b" stroke="#6fe3a0" stroke-width="2"/>
+      <rect x="118" y="-14" width="12" height="36" rx="4" fill="#17171b" stroke="#b79bff" stroke-width="2"/>
+    </g>
+  </defs>
+  <!-- grid rooms -->
+  <g font-size="14" text-anchor="middle" font-weight="700">
+    <!-- row 1 -->
+    <rect x="130" y="40" width="180" height="160" rx="12" fill="#141416" stroke="#2c2c33" stroke-width="2"/>
+    <text x="220" y="125" fill="#9a9aa6">NW</text>
+    <rect x="340" y="40" width="180" height="160" rx="12" fill="#141416" stroke="#2c2c33" stroke-width="2"/>
+    <text x="430" y="125" fill="#9a9aa6">N</text>
+    <rect x="550" y="40" width="180" height="160" rx="12" fill="#141416" stroke="#2c2c33" stroke-width="2"/>
+    <text x="640" y="125" fill="#9a9aa6">NE</text>
+    <!-- row 2 -->
+    <rect x="130" y="230" width="180" height="160" rx="12" fill="#141416" stroke="#2c2c33" stroke-width="2"/>
+    <text x="220" y="315" fill="#9a9aa6">W</text>
+    <rect x="340" y="230" width="180" height="160" rx="12" fill="#1d1d21" stroke="#f2913a" stroke-width="2.5"/>
+    <text x="430" y="288" fill="#f2913a">CENTER</text>
+    <rect x="408" y="300" width="44" height="30" rx="5" fill="#221d10" stroke="#f2913a" stroke-width="2"/>
+    <text x="430" y="352" fill="#9a9aa6" font-size="11" font-weight="400">deposit chest · Witness hand AoE</text>
+    <rect x="550" y="230" width="180" height="160" rx="12" fill="#141416" stroke="#2c2c33" stroke-width="2"/>
+    <text x="640" y="315" fill="#9a9aa6">E</text>
+    <!-- row 3 -->
+    <rect x="130" y="420" width="180" height="160" rx="12" fill="#141416" stroke="#2c2c33" stroke-width="2"/>
+    <text x="220" y="505" fill="#9a9aa6">SW</text>
+    <rect x="340" y="420" width="180" height="160" rx="12" fill="#141416" stroke="#2c2c33" stroke-width="2"/>
+    <text x="430" y="505" fill="#9a9aa6">S</text>
+    <rect x="550" y="420" width="180" height="160" rx="12" fill="#141416" stroke="#2c2c33" stroke-width="2"/>
+    <text x="640" y="505" fill="#9a9aa6">SE</text>
+  </g>
+  <!-- plate + conductor icons in every outer room -->
+  <use href="#roomkit" x="155" y="160"/>
+  <use href="#roomkit" x="365" y="160"/>
+  <use href="#roomkit" x="575" y="160"/>
+  <use href="#roomkit" x="155" y="350"/>
+  <use href="#roomkit" x="575" y="350"/>
+  <use href="#roomkit" x="155" y="540"/>
+  <use href="#roomkit" x="365" y="540"/>
+  <use href="#roomkit" x="575" y="540"/>
+  <!-- team flow arrows -->
+  <path d="M120 310 Q90 150 200 90 " stroke="#6fe3a0" stroke-width="3" fill="none" marker-end="url(#arr1)"/>
+  <text x="66" y="200" fill="#6fe3a0" font-size="13" font-weight="700" transform="rotate(-72 66 200)">TEAM A · counter-clockwise</text>
+  <path d="M740 310 Q770 150 660 90" stroke="#b79bff" stroke-width="3" fill="none" marker-end="url(#arr1)"/>
+  <text x="799" y="205" fill="#b79bff" font-size="13" font-weight="700" transform="rotate(72 799 205)">TEAM B · clockwise</text>
+  <!-- wires -->
+  <path d="M310 120 H340 M520 120 H550 M310 500 H340 M520 500 H550 M220 200 V230 M220 390 V420 M640 200 V230 M640 390 V420" stroke="#9c5a20" stroke-width="2" stroke-dasharray="5 4"/>
+  <text x="430" y="610" fill="#9c5a20" font-size="12" text-anchor="middle">— orange wires link each room's plate to its neighbors' plates —</text>
+</svg>

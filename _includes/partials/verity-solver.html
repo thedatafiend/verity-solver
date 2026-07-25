@@ -1,0 +1,38 @@
+  <!-- ============ SOLVER ============ -->
+  <div class="card">
+    <h2><span class="tag">Inside</span> Solo-room shapes</h2>
+    <p class="hint">The 2D shape each trapped player's statue holds (they call it out). Left → Middle → Right.</p>
+    <div class="cols3" id="insideInputs"></div>
+  </div>
+
+  <div class="card">
+    <h2><span class="tag">Outside</span> Statue shapes</h2>
+    <p class="hint">The 3D shape currently displayed on each big statue in the main room.</p>
+    <div class="cols3" id="outsideInputs"></div>
+  </div>
+
+  <div class="actions">
+    <button class="btn primary" id="solveBtn">Solve</button>
+    <button class="btn ghost" id="resetBtn">Reset</button>
+    <button class="btn ghost" id="exampleBtn">Load example</button>
+  </div>
+
+  <div id="result">
+    <div id="warnBox"></div>
+
+    <div class="card">
+      <h2><span class="tag">Inside</span> Build these shapes</h2>
+      <p class="hint">Each solo player leaves with the 3D shape made from the <em>other two</em> players' shapes. Everyone sends their own shape to both other players.</p>
+      <div id="insideSolution"></div>
+    </div>
+
+    <div class="card">
+      <h2><span class="tag">Outside</span> Dissect &amp; dunk order</h2>
+      <div class="subhead" id="outsideGoalHead">Target statues</div>
+      <div id="outsideTargets"></div>
+      <div class="subhead" style="margin-top:18px;">Steps <span id="stepCount" class="name3d"></span></div>
+      <ol class="steps" id="outsideSteps"></ol>
+    </div>
+  </div>
+
+  <!-- ============ GUIDE ============ -->
