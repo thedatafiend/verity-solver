@@ -1,0 +1,89 @@
+{#
+  Renders the typed content blocks that make up a card.
+  See docs/content-model.md for the schema.
+#}
+{% macro block(b, raid) %}
+{%- if b.type == "hint" -%}
+    <p class="hint"{% if b.css %} style="{{ b.css }}"{% endif %}>{{ b.html | safe }}</p>
+{%- elif b.type == "text" -%}
+    <p>{{ b.html | safe }}</p>
+{%- elif b.type == "heading" -%}
+    <h3>{{ b.html | safe }}</h3>
+{%- elif b.type == "list" -%}
+    <{{ b.style }}>
+{%- for it in b.items %}
+      <li>{{ it | safe }}</li>
+{%- endfor %}
+    </{{ b.style }}>
+{%- elif b.type == "steps" -%}
+    <ol class="steps">
+{%- for st in b.items %}
+      <li class="step"><span class="act">{{ st.act | safe }}</span>{% if st.res %}<span class="res">{{ st.res | safe }}</span>{% endif %}</li>
+{%- endfor %}
+    </ol>
+{%- elif b.type == "keyline" -%}
+    <div class="keyline">
+      {{ b.html | safe }}
+{%- if b.why %}
+      <p class="why">{{ b.why | safe }}</p>
+{%- endif %}
+    </div>
+{%- elif b.type == "table" -%}
+    <div class="tablewrap">
+      <table class="data">
+        <tr>{% for c in b.columns %}<th>{{ c | safe }}</th>{% endfor %}</tr>
+{%- for row in b.rows %}
+        <tr>{% for c in row %}<td>{{ c | safe }}</td>{% endfor %}</tr>
+{%- endfor %}
+      </table>
+    </div>
+{%- elif b.type == "roles" -%}
+    <div class="roles">
+{%- for r in b.items %}
+      <div class="role">
+        <div class="who">{{ r.who | safe }}</div>
+        <p>{{ r.html | safe }}</p>
+      </div>
+{%- endfor %}
+    </div>
+{%- elif b.type == "map" -%}
+    <figure class="diagram">
+      <div class="frame">
+        {{ b.file | inlineSvg(raid) | safe }}
+      </div>
+{%- if b.legend %}
+      <div class="legend">
+{%- for l in b.legend %}
+        <span><i style="background:{{ l.color }}"></i> {{ l.label | safe }}</span>
+{%- endfor %}
+      </div>
+{%- endif %}
+{%- if b.caption %}
+      <figcaption>{{ b.caption | safe }}</figcaption>
+{%- endif %}
+    </figure>
+{%- elif b.type == "sources" -%}
+    <ul class="srcs">
+{%- for it in b.items %}
+      <li>{{ it | safe }}</li>
+{%- endfor %}
+    </ul>
+{%- elif b.type == "html" -%}
+{{ b.html | safe }}
+{%- else -%}
+{{ error_unknown_block_type_(b.type) }}
+{%- endif -%}
+{% endmacro %}
+
+{% macro section(s, raid) %}
+{%- if s.type == "include" -%}
+{% include s.file %}
+{%- else -%}
+  <div class="card{% if s.style %} {{ s.style }}{% endif %}"{% if s.id %} id="{{ s.id }}"{% endif %}>
+    <h2><span class="tag{% if s.tag_style %} {{ s.tag_style }}{% endif %}">{{ s.tag | safe }}</span> {{ s.heading | safe }}</h2>
+{%- for b in s.blocks %}
+{{ block(b, raid) }}
+{%- endfor %}
+  </div>
+{%- endif -%}
+{% endmacro %}

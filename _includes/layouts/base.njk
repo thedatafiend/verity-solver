@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>{{ page_title | safe }}</title>
+<meta name="description" content="{{ description | safe }}" />
+<link rel="stylesheet" href="assets/style.css" />
+</head>
+<body>
+<div class="wrap">
+  <nav class="site">
+    <a href="index.html"{% if is_hub %} class="cur"{% endif %}>{{ raid_name }}</a>
+{%- for e in collections.encounters | byRaid(raid) %}
+    <a href="{{ e.fileSlug }}.html"{% if not is_hub and e.fileSlug == page.fileSlug %} class="cur"{% endif %}><span class="n">{{ e.data.number }}</span>{{ e.data.nav_label }}</a>
+{%- endfor %}
+  </nav>
+
+  <header class="top">
+    <span class="kicker">{{ kicker | safe }}</span>
+    <h1>{{ title | safe }}</h1>
+    <p>{{ intro | safe }}</p>
+  </header>
+
+{{ content | safe }}
+  <footer class="foot">{{ footer | safe }}</footer>
+</div>
+{% for s in scripts %}
+<script src="{{ s }}"></script>
+{%- endfor %}
+</body>
+</html>

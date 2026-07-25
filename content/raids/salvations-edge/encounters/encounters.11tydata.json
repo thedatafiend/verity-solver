@@ -1,0 +1,4 @@
+{
+  "layout": "layouts/encounter.njk",
+  "permalink": "/{{ page.fileSlug }}.html"
+}

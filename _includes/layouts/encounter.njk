@@ -1,0 +1,14 @@
+---
+layout: layouts/base.njk
+---
+{% import "partials/blocks.njk" as b -%}
+{% for s in sections -%}
+{{ b.section(s, raid) }}
+
+{% endfor -%}
+{%- set prev = collections.encounters | encounterByNumber(raid, number - 1) -%}
+{%- set next = collections.encounters | encounterByNumber(raid, number + 1) -%}
+  <div class="pagenav">
+    <a href="{% if prev %}{{ prev.fileSlug }}.html{% else %}index.html{% endif %}">← {% if prev %}{{ prev.data.number }} · {{ prev.data.nav_label }}{% else %}Raid hub{% endif %}</a>
+    <a href="{% if next %}{{ next.fileSlug }}.html{% else %}index.html{% endif %}">{% if next %}{{ next.data.number }} · {{ next.data.nav_label }}{% else %}Raid hub{% endif %} →</a>
+  </div>

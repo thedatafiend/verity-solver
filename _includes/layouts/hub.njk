@@ -1,0 +1,21 @@
+---
+layout: layouts/base.njk
+---
+{% import "partials/blocks.njk" as b -%}
+  <div class="enc-grid">
+{%- for e in collections.encounters | byRaid(raid) %}
+    <a class="enc-card" href="{{ e.fileSlug }}.html">
+      <span class="num">{{ e.data.number }}</span>
+      <div>
+        <h3>{{ e.data.card.title | safe }}</h3>
+        <p class="sub">{{ e.data.card.blurb | safe }}</p>
+        <p class="meta">{{ e.data.card.meta | safe }}</p>
+      </div>
+    </a>
+{%- endfor %}
+  </div>
+
+{% for s in sections -%}
+{{ b.section(s, raid) }}
+
+{% endfor -%}

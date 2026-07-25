@@ -1,0 +1,44 @@
+<svg viewBox="0 0 860 460" role="img" aria-label="Top-down schematic of a Repository room">
+  <defs>
+    <marker id="arr2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#9c5a20"/>
+    </marker>
+  </defs>
+  <!-- room outline -->
+  <rect x="30" y="24" width="800" height="410" rx="16" fill="#0e0e10" stroke="#2c2c33" stroke-width="2"/>
+  <!-- exit door -->
+  <rect x="370" y="14" width="120" height="20" rx="6" fill="#221d10" stroke="#f2913a" stroke-width="2"/>
+  <text x="430" y="58" fill="#f2913a" font-size="12.5" text-anchor="middle" font-weight="700">exit door — opens after deposit + champion kill</text>
+  <text x="430" y="76" fill="#ff7a7a" font-size="11.5" text-anchor="middle">⚠ Unstoppable Incendior + Scorpius turrets spawn back here at phase end</text>
+  <!-- conduits -->
+  <g text-anchor="middle" font-weight="700">
+    <rect x="140" y="110" width="48" height="86" rx="9" fill="#17171b" stroke="#b79bff" stroke-width="2.5"/>
+    <text x="164" y="216" fill="#b79bff" font-size="13">L conduit</text>
+    <rect x="406" y="110" width="48" height="86" rx="9" fill="#17171b" stroke="#b79bff" stroke-width="2.5"/>
+    <text x="430" y="216" fill="#b79bff" font-size="13">M conduit</text>
+    <rect x="672" y="110" width="48" height="86" rx="9" fill="#17171b" stroke="#b79bff" stroke-width="2.5"/>
+    <text x="696" y="216" fill="#b79bff" font-size="13">R conduit</text>
+  </g>
+  <text x="430" y="100" fill="#ff7a7a" font-size="11.5" text-anchor="middle">a Tormentor guards each conduit at phase start</text>
+  <!-- plate pairs -->
+  <g>
+    <rect x="112" y="256" width="34" height="34" rx="5" fill="#17171b" stroke="#6fe3a0" stroke-width="2"/>
+    <rect x="188" y="256" width="34" height="34" rx="5" fill="#17171b" stroke="#6fe3a0" stroke-width="2"/>
+    <text x="164" y="316" fill="#6fe3a0" font-size="12" text-anchor="middle" font-weight="700">L plates · triangle</text>
+    <rect x="378" y="256" width="34" height="34" rx="5" fill="#17171b" stroke="#6fe3a0" stroke-width="2"/>
+    <rect x="454" y="256" width="34" height="34" rx="5" fill="#17171b" stroke="#6fe3a0" stroke-width="2"/>
+    <text x="430" y="316" fill="#6fe3a0" font-size="12" text-anchor="middle" font-weight="700">M plates · circle</text>
+    <rect x="644" y="256" width="34" height="34" rx="5" fill="#17171b" stroke="#6fe3a0" stroke-width="2"/>
+    <rect x="720" y="256" width="34" height="34" rx="5" fill="#17171b" stroke="#6fe3a0" stroke-width="2"/>
+    <text x="696" y="316" fill="#6fe3a0" font-size="12" text-anchor="middle" font-weight="700">R plates · square</text>
+  </g>
+  <!-- wires straight (room 1) -->
+  <path d="M164 252 V200" stroke="#9c5a20" stroke-width="2.5" marker-end="url(#arr2)" stroke-dasharray="5 4"/>
+  <path d="M430 252 V200" stroke="#9c5a20" stroke-width="2.5" marker-end="url(#arr2)" stroke-dasharray="5 4"/>
+  <path d="M696 252 V200" stroke="#9c5a20" stroke-width="2.5" marker-end="url(#arr2)" stroke-dasharray="5 4"/>
+  <!-- chest -->
+  <rect x="404" y="352" width="52" height="34" rx="6" fill="#221d10" stroke="#f2913a" stroke-width="2.5"/>
+  <text x="430" y="406" fill="#f2913a" font-size="12.5" text-anchor="middle" font-weight="700">Resonant Chest — start &amp; mass deposit</text>
+  <text x="430" y="428" fill="#9a9aa6" font-size="12" text-anchor="middle" letter-spacing="2">— TEAM ENTRY —</text>
+  <text x="164" y="428" fill="#9a9aa6" font-size="11" text-anchor="middle">(floor-1 wiring shown: straight)</text>
+</svg>
